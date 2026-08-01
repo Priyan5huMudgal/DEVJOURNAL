@@ -13,6 +13,12 @@ export async function connectDB(): Promise<void> {
     return;
   }
 
+  if (mongoose.connection.readyState === 1) {
+    isConnected = true;
+    connectionError = null;
+    return;
+  }
+
   try {
     console.log('Attempting MongoDB connection. URI starts with:', mongoUri.substring(0, 30));
     mongoose.set('strictQuery', true);

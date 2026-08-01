@@ -2,23 +2,14 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/index.ts",
-      "use": "@vercel/node"
+      "source": "/api/(.*)",
+      "destination": "/api/index.ts"
     },
     {
-      "src": "dist/**",
-      "use": "@vercel/static"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "api/index.ts" },
-    { "src": "/assets/(.*)", "dest": "dist/assets/$1" },
-    {
-      "src": "/(.*\\.(js|css|json|svg|png|jpg|jpeg|gif|woff|woff2))",
-      "dest": "dist/$1"
-    },
-    { "src": "/.*", "dest": "dist/index.html" }
   ]
 }

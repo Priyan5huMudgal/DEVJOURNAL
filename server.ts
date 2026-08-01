@@ -94,13 +94,14 @@ export async function initializeApp(): Promise<void> {
           app.use(vite.middlewares);
         } catch (viteError) {
           console.warn(
+
             "⚠️ Vite middleware failed (OK in serverless):",
             viteError,
           );
         }
-      } else {
+      } else if (!isVercel) {
         console.log(
-          "📦 Running in PRODUCTION mode. Serving pre-compiled static files...",
+          "📦 Running in PRODUCTION mode (Standalone Node). Serving pre-compiled static files...",
         );
         const distPath = path.join(process.cwd(), "dist");
         app.use(express.static(distPath));
@@ -154,7 +155,22 @@ export async function startServer() {
   startListening(requestedPort);
 }
 
-// Local development startup only
+// Initialization middleware - runs on first request
+let initStarted = false;
+app.use(async (req, res, next) => {
+  if (!initStarted) {
+    initStarted = true;
+    try {
+      await initializeApp();
+    } catch (err) {
+      console.error("App initialization failed:", err);
+      return res.status(503).json({ error: "Service initialization failed" });
+    }
+  }
+  next();
+});
+
+// Local development startup
 if (!process.env.VERCEL) {
   startServer().catch((error) => {
     console.error("Fatal Server Boot Error:", error);
