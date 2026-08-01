@@ -30,10 +30,7 @@ async function initializeApp() {
       const startedFromBuiltServer =
         process.argv[1]?.endsWith("dist/server.cjs") ||
         process.argv[1]?.includes("dist/server.cjs");
-      const isProduction =
-        process.env.NODE_ENV === "production" ||
-        isVercel ||
-        (process.env.NODE_ENV === undefined && startedFromBuiltServer);
+      const isProduction = process.env.NODE_ENV === "production" || isVercel;
 
       await connectDB();
 
@@ -124,15 +121,20 @@ export async function startServer() {
 
   const startListening = (port: number) => {
     const server = app.listen(port, HOST, () => {
-      console.log(`🚀 DevJournal Server running at http://${HOST}:${port}`);
-      console.log(`👉 Preview mode enabled via Vite.`);
+      console.log(`🚀 DevJournal Server running at http://localhost:${port}`);
+      console.log(`👉 Press Ctrl+C to stop.`);
     });
 
     server.on("error", (error: NodeJS.ErrnoException) => {
-      if (error.code === "EADDRINUSE" && port === requestedPort) {
-        const fallbackPort = port + 1;
-        console.warn(`Port ${port} is busy. Retrying on ${fallbackPort}...`);
-        startListening(fallbackPort);
+      if (error.code === "EADDRINUSE") {
+        const nextPort = port + 1;
+        console.warn(`⚠️ Port ${port} is busy. Trying port ${nextPort}...`);
+        if (nextPort < port + 10) {
+          startListening(nextPort);
+        } else {
+          console.error("❌ Could not find an available port");
+          process.exit(1);
+        }
         return;
       }
 
