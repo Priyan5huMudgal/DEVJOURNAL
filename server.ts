@@ -16,6 +16,7 @@ import snippetRoutes from "./server/routes/snippetRoutes";
 import analyticsRoutes from "./server/routes/analyticsRoutes";
 
 export const app: Express = express();
+
 let appInitialized = false;
 let initPromise: Promise<void> | null = null;
 
@@ -24,13 +25,8 @@ export async function initializeApp(): Promise<void> {
   if (initPromise) return initPromise;
 
   initPromise = (async () => {
-    if (appInitialized) return;
     try {
-      const isVercel = Boolean(process.env.VERCEL);
-      const startedFromBuiltServer =
-        process.argv[1]?.endsWith("dist/server.cjs") ||
-        process.argv[1]?.includes("dist/server.cjs");
-      const isProduction = process.env.NODE_ENV === "production" || isVercel;
+      const isProduction = process.env.NODE_ENV === "production";
 
       await connectDB();
 
@@ -38,14 +34,14 @@ export async function initializeApp(): Promise<void> {
         helmet({
           contentSecurityPolicy: false,
           crossOriginEmbedderPolicy: false,
-        }),
+        })
       );
 
       app.use(
         cors({
           origin: true,
           credentials: true,
-        }),
+        })
       );
 
       app.use(express.json({ limit: "10mb" }));
@@ -59,9 +55,11 @@ export async function initializeApp(): Promise<void> {
           return res.status(503).json({
             success: false,
             message:
-              connectionError || "Service Unavailable: Database not connected.",
+              connectionError ||
+              "Service Unavailable: Database not connected.",
           });
         }
+
         next();
       });
 
@@ -84,27 +82,31 @@ export async function initializeApp(): Promise<void> {
 
       if (!isProduction) {
         console.log(
-          "⚡ Running in DEVELOPMENT mode. Mounting Vite Dev middleware...",
+          "⚡ Running in DEVELOPMENT mode. Mounting Vite Dev middleware..."
         );
+
         try {
           const vite = await createViteServer({
-            server: { middlewareMode: true },
+            server: {
+              middlewareMode: true,
+            },
             appType: "spa",
           });
-          app.use(vite.middlewares);
-        } catch (viteError) {
-          console.warn(
 
-            "⚠️ Vite middleware failed (OK in serverless):",
-            viteError,
+          app.use(vite.middlewares);
+        } catch (error) {
+          console.warn(
+            "⚠️ Vite middleware failed:",
+            error
           );
         }
-      } else if (!isVercel) {
-        console.log(
-          "📦 Running in PRODUCTION mode (Standalone Node). Serving pre-compiled static files...",
-        );
+      } else {
+        console.log("📦 Serving production build...");
+
         const distPath = path.join(process.cwd(), "dist");
+
         app.use(express.static(distPath));
+
         app.get("*", (req, res) => {
           res.sendFile(path.join(distPath, "index.html"));
         });
@@ -112,7 +114,7 @@ export async function initializeApp(): Promise<void> {
 
       appInitialized = true;
     } catch (error) {
-      console.error("Failed to initialize app:", error);
+      console.error("Failed to initialize application:", error);
       appInitialized = false;
       initPromise = null;
       throw error;
@@ -126,56 +128,60 @@ export async function startServer() {
   await initializeApp();
 
   const HOST = process.env.HOST || "0.0.0.0";
-  const requestedPort = Number(process.env.PORT) || 3000;
+  const PORT = Number(process.env.PORT) || 3000;
 
-  const startListening = (port: number) => {
+  const listen = (port: number) => {
     const server = app.listen(port, HOST, () => {
-      console.log(`🚀 DevJournal Server running at http://localhost:${port}`);
-      console.log(`👉 Press Ctrl+C to stop.`);
+      console.log(`🚀 DevJournal running at http://${HOST}:${port}`);
     });
 
     server.on("error", (error: NodeJS.ErrnoException) => {
       if (error.code === "EADDRINUSE") {
         const nextPort = port + 1;
-        console.warn(`⚠️ Port ${port} is busy. Trying port ${nextPort}...`);
-        if (nextPort < port + 10) {
-          startListening(nextPort);
-        } else {
-          console.error("❌ Could not find an available port");
-          process.exit(1);
+
+        console.warn(
+          `⚠️ Port ${port} is in use. Trying ${nextPort}...`
+        );
+
+        if (nextPort <= port + 10) {
+          listen(nextPort);
+          return;
         }
-        return;
+
+        console.error("❌ No available ports found.");
+        process.exit(1);
       }
 
-      console.error("Fatal Server Boot Error:", error);
+      console.error(error);
       process.exit(1);
     });
   };
 
-  startListening(requestedPort);
+  listen(PORT);
 }
 
-// Initialization middleware - runs on first request
 let initStarted = false;
+
 app.use(async (req, res, next) => {
   if (!initStarted) {
     initStarted = true;
+
     try {
       await initializeApp();
-    } catch (err) {
-      console.error("App initialization failed:", err);
-      return res.status(503).json({ error: "Service initialization failed" });
+    } catch (error) {
+      console.error(error);
+      return res.status(503).json({
+        error: "Application initialization failed",
+      });
     }
   }
+
   next();
 });
 
-// Local development startup
-if (!process.env.VERCEL) {
-  startServer().catch((error) => {
-    console.error("Fatal Server Boot Error:", error);
-    process.exit(1);
-  });
-}
+startServer().catch((error) => {
+  console.error("Fatal Server Boot Error:", error);
+  process.exit(1);
+});
 
 export default app;
