@@ -19,7 +19,7 @@ export const app: Express = express();
 let appInitialized = false;
 let initPromise: Promise<void> | null = null;
 
-async function initializeApp(): Promise<void> {
+export async function initializeApp(): Promise<void> {
   if (appInitialized) return;
   if (initPromise) return initPromise;
 
