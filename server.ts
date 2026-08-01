@@ -1,11 +1,10 @@
 import "dotenv/config";
-import express from "express";
+import express, { Express } from "express";
 import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import { createServer as createViteServer } from "vite";
-import serverless from "serverless-http";
 
 import { connectDB, isConnected, connectionError } from "./server/db";
 import authRoutes from "./server/routes/authRoutes";
@@ -16,12 +15,12 @@ import resourceRoutes from "./server/routes/resourceRoutes";
 import snippetRoutes from "./server/routes/snippetRoutes";
 import analyticsRoutes from "./server/routes/analyticsRoutes";
 
-export const app = express();
+export const app: Express = express();
 let appInitialized = false;
-let initPromise: Promise<express.Express> | null = null;
+let initPromise: Promise<void> | null = null;
 
 async function initializeApp() {
-  if (appInitialized) return app;
+  if (appInitialized) return;
   if (initPromise) return initPromise;
 
   initPromise = (async () => {
@@ -103,7 +102,6 @@ async function initializeApp() {
       }
 
       appInitialized = true;
-      return app;
     } catch (error) {
       console.error("Failed to initialize app:", error);
       throw error;
@@ -146,31 +144,18 @@ export async function startServer() {
   startListening(requestedPort);
 }
 
-let cachedHandler: any = null;
-
-async function getHandler() {
-  if (cachedHandler) {
-    return cachedHandler;
-  }
-
+// Ensure app is initialized before any request
+app.use(async (req, res, next) => {
   await initializeApp();
-  cachedHandler = serverless(app);
-  return cachedHandler;
-}
+  next();
+});
 
-export default async (req: any, res: any) => {
-  try {
-    const handler = await getHandler();
-    return handler(req, res);
-  } catch (error) {
-    console.error("Handler error:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
+// Local development startup
 if (!process.env.VERCEL) {
   startServer().catch((error) => {
     console.error("Fatal Server Boot Error:", error);
     process.exit(1);
   });
 }
+
+export default app;
