@@ -2,106 +2,119 @@
 
 # 🚀 DevJournal
 
-### A Full-Stack AI-Powered Developer Productivity Platform
+### A Full-Stack Developer Productivity & Learning Management Platform
 
-Track your coding journey, manage goals, write journals, organize resources, save code snippets, and gain AI-powered insights—all in one place.
+DevJournal is a modern web application built for developers to organize their learning journey, document daily progress, manage goals, save useful resources, store reusable code snippets, and monitor productivity through an interactive dashboard.
 
-![License](https://img.shields.io/badge/License-MIT-blue.svg)
-![Node.js](https://img.shields.io/badge/Node.js-20+-green)
-![React](https://img.shields.io/badge/React-19-61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
-![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248)
-![Express](https://img.shields.io/badge/Express.js-4-black)
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=node.js&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Express.js-4-black?style=for-the-badge&logo=express"/>
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white"/>
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white"/>
+  <img src="https://img.shields.io/badge/TailwindCSS-4-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
+</p>
+
+### 🌐 Live Demo
+
+**https://devjournal-hq11.onrender.com**
 
 </div>
 
 ---
 
-## 📖 Overview
+# 📖 About DevJournal
 
-DevJournal is a modern full-stack web application designed to help developers organize their learning journey and improve productivity.
+Developers often use multiple applications to maintain notes, track learning goals, bookmark useful resources, save code snippets, and monitor their progress. Switching between different tools can interrupt workflow and make learning difficult.
 
-Instead of managing notes, goals, resources, and code snippets across multiple platforms, DevJournal provides a centralized workspace with AI-assisted features to help developers stay organized and focused.
+**DevJournal** solves this problem by providing a centralized workspace where developers can manage everything related to their learning and productivity from a single dashboard.
+
+The application enables users to maintain personal journals, create learning goals, organize educational resources, build learning roadmaps, save reusable code snippets, and visualize their progress through interactive analytics. It is designed with a clean, responsive interface to provide a seamless experience across desktop and mobile devices.
 
 ---
 
 # ✨ Features
 
-## 📔 Smart Journal
+## 🔐 Authentication
 
-- Create and manage daily developer journals
-- Rich markdown support
-- Track coding progress
-- Organize entries chronologically
+- Secure user registration and login
+- JWT-based authentication
+- Password hashing using bcrypt
+- Protected API routes
+- Persistent user sessions
+
+---
+
+## 📔 Journal Management
+
+- Create personal developer journals
+- Edit existing journal entries
+- Delete journals
+- Organize learning notes
+- Track daily coding progress
 
 ---
 
 ## 🎯 Goal Management
 
-- Create learning goals
-- Track completion status
+- Create personal learning goals
+- Track progress
+- Update goal status
+- Mark goals as completed
 - Organize short-term and long-term objectives
-- Monitor progress visually
 
 ---
 
 ## 🗺️ Learning Roadmaps
 
-- Create personalized learning roadmaps
-- Organize topics into structured milestones
+- Create customized learning roadmaps
+- Organize milestones
 - Track roadmap completion
+- Manage learning plans efficiently
 
 ---
 
 ## 📚 Resource Library
 
-Save and organize:
+Store and organize:
 
 - Documentation
-- YouTube tutorials
 - Articles
+- Tutorials
 - GitHub repositories
-- Learning resources
+- Learning references
+- Useful links
 
 ---
 
-## 💻 Code Snippets
+## 💻 Code Snippet Manager
 
 - Save reusable code snippets
 - Organize snippets by language
-- Quick searching and retrieval
+- Quickly search saved snippets
+- Manage frequently used code
 
 ---
 
 ## 📊 Analytics Dashboard
 
-Visual insights including:
+Visualize your productivity through:
 
-- Productivity statistics
-- Journal activity
-- Goal completion
-- Learning progress
-- Developer activity overview
-
----
-
-## 🤖 AI Features
-
-Powered by **Google Gemini AI**
-
-- AI-assisted writing
-- Smart suggestions
-- Developer productivity assistance
-- Intelligent content generation
+- Journal statistics
+- Goal completion statistics
+- Learning activity overview
+- Interactive charts
+- Progress tracking
 
 ---
 
-## 🔐 Authentication
+## 📱 Responsive Design
 
-- JWT Authentication
-- Secure Password Hashing
-- Cookie-based Authentication
-- Protected Routes
+- Mobile-friendly interface
+- Responsive layouts
+- Modern UI using Tailwind CSS and DaisyUI
+- Smooth user experience across all devices
 
 ---
 
@@ -126,59 +139,59 @@ Powered by **Google Gemini AI**
 - Express.js
 - MongoDB
 - Mongoose
-- JWT
-- Bcrypt
+- JWT Authentication
+- bcrypt
 - Helmet
 - CORS
-- Express Rate Limit
+- Express Rate Limiting
 
 ---
 
-## AI
+## Development Tools
 
-- Google Gemini API
-
----
-
-## Cloud
-
-- Cloudinary (Media Storage)
+- Git
+- GitHub
+- VS Code
+- npm
 
 ---
 
 # 📂 Project Structure
 
-```
-DevJournal/
+```text
+DEVJOURNAL
 │
 ├── server/
 │   ├── controllers/
 │   ├── middleware/
 │   ├── models/
 │   ├── routes/
-│   └── db.ts
+│   ├── db.ts
+│   └── utils/
 │
 ├── src/
 │   ├── components/
 │   ├── pages/
 │   ├── hooks/
-│   ├── utils/
-│   └── assets/
+│   ├── assets/
+│   ├── context/
+│   └── utils/
 │
-├── dist/
+├── public/
 ├── server.ts
 ├── package.json
+├── tsconfig.json
 └── README.md
 ```
 
 ---
 
-# ⚙️ Installation
+# 🚀 Getting Started
 
 ## Clone Repository
 
 ```bash
-git clone https://github.com/your-username/DEVJOURNAL.git
+git clone https://github.com/Priyan5huMudgal/DEVJOURNAL.git
 
 cd DEVJOURNAL
 ```
@@ -193,27 +206,26 @@ npm install
 
 ---
 
-## Environment Variables
+## Configure Environment Variables
 
-Create a `.env` file in the project root.
+Create a **.env** file in the project root.
 
 ```env
-MONGODB_URI=your_mongodb_uri
+MONGODB_URI=your_mongodb_connection_string
 
 JWT_SECRET=your_jwt_secret
 
 JWT_REFRESH_SECRET=your_refresh_secret
 
-GEMINI_API_KEY=your_gemini_api_key
-
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-
-CLOUDINARY_API_KEY=your_api_key
-
-CLOUDINARY_API_SECRET=your_api_secret
-
 NODE_ENV=development
 ```
+
+| Variable | Description |
+|----------|-------------|
+| `MONGODB_URI` | MongoDB connection string |
+| `JWT_SECRET` | Secret key used to generate access tokens |
+| `JWT_REFRESH_SECRET` | Secret key used to generate refresh tokens |
+| `NODE_ENV` | Application environment (`development` or `production`) |
 
 ---
 
@@ -223,9 +235,15 @@ NODE_ENV=development
 npm run dev
 ```
 
+The application will be available at:
+
+```
+http://localhost:3000
+```
+
 ---
 
-## Build Project
+## Build the Project
 
 ```bash
 npm run build
@@ -241,18 +259,18 @@ npm start
 
 ---
 
-# 📡 API Routes
+# 📡 API Endpoints
 
-| Route | Description |
-|--------|-------------|
-| `/api/auth` | Authentication |
+| Endpoint | Description |
+|-----------|-------------|
+| `/api/auth` | User Authentication |
 | `/api/journal` | Journal Management |
-| `/api/goals` | Goals |
-| `/api/resources` | Learning Resources |
-| `/api/snippets` | Code Snippets |
-| `/api/roadmaps` | Learning Roadmaps |
-| `/api/analytics` | Analytics |
-| `/api/health` | Health Check |
+| `/api/goals` | Goal Management |
+| `/api/roadmaps` | Roadmap Management |
+| `/api/resources` | Resource Management |
+| `/api/snippets` | Code Snippet Management |
+| `/api/analytics` | Analytics Dashboard |
+| `/api/health` | Server Health Check |
 
 ---
 
@@ -261,77 +279,80 @@ npm start
 - JWT Authentication
 - Password Hashing using bcrypt
 - HTTP Security Headers (Helmet)
+- CORS Protection
 - Rate Limiting
-- Secure Cookies
-- Environment Variables
+- Environment Variable Configuration
 
 ---
 
-# 🚀 Deployment
+# 🌐 Live Application
 
-This application can be deployed on:
-
-- Render
-- Railway
-- DigitalOcean
-- AWS EC2
-- Azure App Service
-
----
-
-# 📸 Screenshots
-
-> Add screenshots here after deployment.
-
-Example:
-
-```
-screenshots/
-
-Home.png
-
-Dashboard.png
-
-Journal.png
-
-Analytics.png
-```
+**Application:** https://devjournal-hq11.onrender.com
 
 ---
 
 # 📈 Future Enhancements
 
-- AI Learning Recommendations
-- Dark / Light Themes
-- Real-time Notifications
-- Collaborative Journals
-- Calendar Integration
-- Markdown Editor
-- GitHub Integration
-- Coding Activity Tracking
-- Daily Streak System
+- 🌙 Dark / Light Theme
+- 📅 Calendar Integration
+- 🔔 Notifications & Reminders
+- 📝 Rich Markdown Editor
+- 📌 Tags & Categories
+- 📥 Import & Export Journals
+- 🔍 Advanced Search & Filtering
+- 🏆 Daily Learning Streaks
+- 📈 Advanced Productivity Insights
+- 🔗 GitHub Activity Integration
+
+---
+
+# 📸 Screenshots
+
+> Screenshots will be added soon.
+
+```
+screenshots/
+│
+├── Home.png
+├── Login.png
+├── Dashboard.png
+├── Journal.png
+├── Goals.png
+├── Resources.png
+├── Snippets.png
+└── Analytics.png
+```
+
+---
+
+# 🚀 Deployment
+
+The application is deployed on Render.
+
+**Live URL:**
+
+https://devjournal-hq11.onrender.com
 
 ---
 
 # 🤝 Contributing
 
-Contributions are welcome!
+Contributions are welcome.
 
 1. Fork the repository
-
 2. Create a feature branch
 
 ```bash
 git checkout -b feature-name
 ```
 
-3. Commit changes
+3. Commit your changes
 
 ```bash
-git commit -m "Add new feature"
+git commit -m "Add feature"
 ```
 
-4. Push branch
+4. Push the branch
 
 ```bash
 git push origin feature-name
@@ -343,7 +364,7 @@ git push origin feature-name
 
 # 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
 
 ---
 
@@ -351,16 +372,18 @@ This project is licensed under the MIT License.
 
 **Priyanshu Mudgal**
 
-MCA Student — National Institute of Technology Kurukshetra
+Master of Computer Applications (MCA)
 
-GitHub: https://github.com/Priyan5huMudgal
+National Institute of Technology Kurukshetra
+
+GitHub: **https://github.com/Priyan5huMudgal**
 
 ---
 
 <div align="center">
 
-### ⭐ If you found this project useful, consider giving it a Star!
+### ⭐ If you found this project useful, consider giving it a star!
 
-Made with ❤️ by Priyanshu Mudgal
+Made with ❤️ by **Priyanshu Mudgal**
 
 </div>
