@@ -3,13 +3,16 @@ import { app } from "../server";
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   try {
-    // The app middleware will handle initialization on first request
-    return app(req, res);
+    // Call Express app as a standard Node.js request handler
+    // TypeScript requires casting to handle the slight type mismatch
+    return app(req as any, res as any);
   } catch (error) {
-    console.error("API Handler Error:", error);
-    return res.status(500).json({
-      error: "Internal Server Error",
-      details: error instanceof Error ? error.message : String(error),
-    });
+    console.error("[API] Handler Error:", error);
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: "Internal Server Error",
+        code: "HANDLER_ERROR",
+      });
+    }
   }
 };

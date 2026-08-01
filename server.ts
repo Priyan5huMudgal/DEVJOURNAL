@@ -19,11 +19,12 @@ export const app: Express = express();
 let appInitialized = false;
 let initPromise: Promise<void> | null = null;
 
-async function initializeApp() {
+async function initializeApp(): Promise<void> {
   if (appInitialized) return;
   if (initPromise) return initPromise;
 
   initPromise = (async () => {
+    if (appInitialized) return;
     try {
       const isVercel = Boolean(process.env.VERCEL);
       const startedFromBuiltServer =
@@ -85,11 +86,18 @@ async function initializeApp() {
         console.log(
           "⚡ Running in DEVELOPMENT mode. Mounting Vite Dev middleware...",
         );
-        const vite = await createViteServer({
-          server: { middlewareMode: true },
-          appType: "spa",
-        });
-        app.use(vite.middlewares);
+        try {
+          const vite = await createViteServer({
+            server: { middlewareMode: true },
+            appType: "spa",
+          });
+          app.use(vite.middlewares);
+        } catch (viteError) {
+          console.warn(
+            "⚠️ Vite middleware failed (OK in serverless):",
+            viteError,
+          );
+        }
       } else {
         console.log(
           "📦 Running in PRODUCTION mode. Serving pre-compiled static files...",
@@ -104,6 +112,8 @@ async function initializeApp() {
       appInitialized = true;
     } catch (error) {
       console.error("Failed to initialize app:", error);
+      appInitialized = false;
+      initPromise = null;
       throw error;
     }
   })();
@@ -144,9 +154,18 @@ export async function startServer() {
   startListening(requestedPort);
 }
 
-// Ensure app is initialized before any request
+// Initialization middleware - runs on first request
+let initStarted = false;
 app.use(async (req, res, next) => {
-  await initializeApp();
+  if (!initStarted) {
+    initStarted = true;
+    try {
+      await initializeApp();
+    } catch (err) {
+      console.error("App initialization failed:", err);
+      return res.status(503).json({ error: "Service initialization failed" });
+    }
+  }
   next();
 });
 
