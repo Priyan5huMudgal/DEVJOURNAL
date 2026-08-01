@@ -1,0 +1,6 @@
+{
+  "name": "DevJournal",
+  "description": "Developer productivity & learning tracker. Features daily journals, goal trackers, roadmaps, code snippets, and personalized analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
