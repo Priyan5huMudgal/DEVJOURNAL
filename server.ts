@@ -18,91 +18,102 @@ import analyticsRoutes from "./server/routes/analyticsRoutes";
 
 export const app = express();
 let appInitialized = false;
+let initPromise: Promise<express.Express> | null = null;
 
 async function initializeApp() {
   if (appInitialized) return app;
+  if (initPromise) return initPromise;
 
-  const isVercel = Boolean(process.env.VERCEL);
-  const startedFromBuiltServer =
-    process.argv[1]?.endsWith("dist/server.cjs") ||
-    process.argv[1]?.includes("dist/server.cjs");
-  const isProduction =
-    process.env.NODE_ENV === "production" ||
-    isVercel ||
-    (process.env.NODE_ENV === undefined && startedFromBuiltServer);
+  initPromise = (async () => {
+    try {
+      const isVercel = Boolean(process.env.VERCEL);
+      const startedFromBuiltServer =
+        process.argv[1]?.endsWith("dist/server.cjs") ||
+        process.argv[1]?.includes("dist/server.cjs");
+      const isProduction =
+        process.env.NODE_ENV === "production" ||
+        isVercel ||
+        (process.env.NODE_ENV === undefined && startedFromBuiltServer);
 
-  await connectDB();
+      await connectDB();
 
-  app.use(
-    helmet({
-      contentSecurityPolicy: false,
-      crossOriginEmbedderPolicy: false,
-    }),
-  );
+      app.use(
+        helmet({
+          contentSecurityPolicy: false,
+          crossOriginEmbedderPolicy: false,
+        }),
+      );
 
-  app.use(
-    cors({
-      origin: true,
-      credentials: true,
-    }),
-  );
+      app.use(
+        cors({
+          origin: true,
+          credentials: true,
+        }),
+      );
 
-  app.use(express.json({ limit: "10mb" }));
-  app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-  app.use(cookieParser());
+      app.use(express.json({ limit: "10mb" }));
+      app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+      app.use(cookieParser());
 
-  app.use("/api", (req, res, next) => {
-    if (req.path === "/health") return next();
+      app.use("/api", (req, res, next) => {
+        if (req.path === "/health") return next();
 
-    if (!isConnected) {
-      return res.status(503).json({
-        success: false,
-        message:
-          connectionError || "Service Unavailable: Database not connected.",
+        if (!isConnected) {
+          return res.status(503).json({
+            success: false,
+            message:
+              connectionError || "Service Unavailable: Database not connected.",
+          });
+        }
+        next();
       });
+
+      app.use("/api/auth", authRoutes);
+      app.use("/api/journal", journalRoutes);
+      app.use("/api/goals", goalRoutes);
+      app.use("/api/roadmaps", roadmapRoutes);
+      app.use("/api/resources", resourceRoutes);
+      app.use("/api/snippets", snippetRoutes);
+      app.use("/api/analytics", analyticsRoutes);
+
+      app.get("/api/health", (req, res) => {
+        res.json({
+          success: isConnected,
+          status: isConnected ? "healthy" : "disconnected",
+          error: connectionError,
+          timestamp: new Date(),
+        });
+      });
+
+      if (!isProduction) {
+        console.log(
+          "⚡ Running in DEVELOPMENT mode. Mounting Vite Dev middleware...",
+        );
+        const vite = await createViteServer({
+          server: { middlewareMode: true },
+          appType: "spa",
+        });
+        app.use(vite.middlewares);
+      } else {
+        console.log(
+          "📦 Running in PRODUCTION mode. Serving pre-compiled static files...",
+        );
+        const distPath = path.join(process.cwd(), "dist");
+        app.use(express.static(distPath));
+        app.get("*", (req, res) => {
+          res.sendFile(path.join(distPath, "index.html"));
+        });
+      }
+
+      appInitialized = true;
+      return app;
+    } catch (error) {
+      console.error("Failed to initialize app:", error);
+      throw error;
     }
-    next();
-  });
+  })();
 
-  app.use("/api/auth", authRoutes);
-  app.use("/api/journal", journalRoutes);
-  app.use("/api/goals", goalRoutes);
-  app.use("/api/roadmaps", roadmapRoutes);
-  app.use("/api/resources", resourceRoutes);
-  app.use("/api/snippets", snippetRoutes);
-  app.use("/api/analytics", analyticsRoutes);
-
-  app.get("/api/health", (req, res) => {
-    res.json({
-      success: isConnected,
-      status: isConnected ? "healthy" : "disconnected",
-      error: connectionError,
-      timestamp: new Date(),
-    });
-  });
-
-  if (!isProduction) {
-    console.log(
-      "⚡ Running in DEVELOPMENT mode. Mounting Vite Dev middleware...",
-    );
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    console.log(
-      "📦 Running in PRODUCTION mode. Serving pre-compiled static files...",
-    );
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-  }
-
-  appInitialized = true;
-  return app;
+  return initPromise;
 }
 
 export async function startServer() {
@@ -133,18 +144,26 @@ export async function startServer() {
   startListening(requestedPort);
 }
 
-let cachedHandler: any;
-export async function getHandler() {
-  await initializeApp();
-  if (!cachedHandler) {
-    cachedHandler = serverless(app);
+let cachedHandler: any = null;
+
+async function getHandler() {
+  if (cachedHandler) {
+    return cachedHandler;
   }
+
+  await initializeApp();
+  cachedHandler = serverless(app);
   return cachedHandler;
 }
 
-export const handler = async (req: any, res: any) => {
-  const wrapped = await getHandler();
-  return wrapped(req, res);
+export default async (req: any, res: any) => {
+  try {
+    const handler = await getHandler();
+    return handler(req, res);
+  } catch (error) {
+    console.error("Handler error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 if (!process.env.VERCEL) {
