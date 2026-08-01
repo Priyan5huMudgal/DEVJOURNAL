@@ -3,14 +3,14 @@ import { app, initializeApp } from "../server";
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   try {
-    // Initialize app on first request
+    // Ensure app is initialized
     await initializeApp();
 
-    // Call Express app handler
-    // Express app works as a request handler in serverless
+    // Call the Express app as middleware/handler
+    // This will route the request through all registered middlewares and routes
     app(req as any, res as any);
   } catch (error) {
-    console.error("[Serverless Handler] Unhandled error:", error);
+    console.error("[API Handler] Fatal error:", error);
     if (!res.headersSent) {
       res.status(500).json({
         error: "Internal Server Error",

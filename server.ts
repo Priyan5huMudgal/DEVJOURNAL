@@ -154,22 +154,7 @@ export async function startServer() {
   startListening(requestedPort);
 }
 
-// Initialization middleware - runs on first request
-let initStarted = false;
-app.use(async (req, res, next) => {
-  if (!initStarted) {
-    initStarted = true;
-    try {
-      await initializeApp();
-    } catch (err) {
-      console.error("App initialization failed:", err);
-      return res.status(503).json({ error: "Service initialization failed" });
-    }
-  }
-  next();
-});
-
-// Local development startup
+// Local development startup only
 if (!process.env.VERCEL) {
   startServer().catch((error) => {
     console.error("Fatal Server Boot Error:", error);
