@@ -306,25 +306,6 @@ npm start
 
 ---
 
-# 📸 Screenshots
-
-> Screenshots will be added soon.
-
-```
-screenshots/
-│
-├── Home.png
-├── Login.png
-├── Dashboard.png
-├── Journal.png
-├── Goals.png
-├── Resources.png
-├── Snippets.png
-└── Analytics.png
-```
-
----
-
 # 🚀 Deployment
 
 The application is deployed on Render.
@@ -359,12 +340,6 @@ git push origin feature-name
 ```
 
 5. Open a Pull Request
-
----
-
-# 📄 License
-
-This project is licensed under the **MIT License**.
 
 ---
 
