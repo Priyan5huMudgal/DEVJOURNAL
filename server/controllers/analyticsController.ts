@@ -183,29 +183,6 @@ export async function getDashboardStats(
       }),
     );
 
-    // // 5. Weekly entry distribution (Mon - Sun)
-    // const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    // const weeklyCounts: { [key: string]: number } = { Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0, Sun: 0 };
-
-    // // Group entries from last 7 days or current week
-    // const now = new Date();
-    // const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1)); // Mon
-    // startOfWeek.setHours(0, 0, 0, 0);
-
-    // journalsData.forEach(j => {
-    //   const entryDate = new Date(j.date);
-    //   const dayName = weekDays[entryDate.getDay()];
-    //   if (dayName in weeklyCounts) {
-    //     weeklyCounts[dayName]++;
-    //   }
-    // });
-
-    // const weeklyDistribution = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => ({
-    //   day,
-    //   journals: weeklyCounts[day],
-    //   hours: weeklyCounts[day] * 2.5 // Simulated learning hours mapping to intensity
-    // }));
-
     // 5. Weekly Activity (Last 7 Days)
 
     const today = new Date();
@@ -213,32 +190,21 @@ export async function getDashboardStats(
 
     const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    console.log("Current Date:", today);
-
     const weeklyDistribution = [];
 
     for (let i = 6; i >= 0; i--) {
       const currentDate = new Date(today);
       currentDate.setDate(today.getDate() - i);
-      currentDate.setHours(0, 0, 0, 0);
 
-      const nextDate = new Date(currentDate);
-      nextDate.setDate(currentDate.getDate() + 1);
-
-      console.log(
-        `Checking ${currentDate.toISOString()} -> ${nextDate.toISOString()}`,
-      );
+      const currentKey = currentDate.toLocaleDateString("en-CA");
 
       let journalsCount = 0;
 
       journalsData.forEach((journal) => {
-        const journalDate = new Date(journal.date);
+        const journalKey = new Date(journal.date).toLocaleDateString("en-CA");
 
-        console.log(`Journal: ${journal.title} | ${journalDate.toISOString()}`);
-
-        if (journalDate >= currentDate && journalDate < nextDate) {
+        if (journalKey === currentKey) {
           journalsCount++;
-          console.log("✔ Counted");
         }
       });
 
@@ -248,8 +214,6 @@ export async function getDashboardStats(
         hours: journalsCount * 2.5,
       });
     }
-
-    console.log("Weekly Distribution:", weeklyDistribution);
 
     // 6. Category Distribution
     const categoryCounts: { [key: string]: number } = {};
