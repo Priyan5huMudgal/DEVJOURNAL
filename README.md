@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 DevJournal
+# DevJournal
 
 ### A Full-Stack Developer Productivity & Learning Management Platform
 
@@ -16,7 +16,7 @@ DevJournal is a modern web application built for developers to organize their le
   <img src="https://img.shields.io/badge/TailwindCSS-4-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
 </p>
 
-### 🌐 Live Demo
+### Live Demo
 
 **https://devjournal-hq11.onrender.com**
 <img width="1873" height="971" alt="image" src="https://github.com/user-attachments/assets/7baf8eea-7ceb-4a05-ac94-6356f1ccee0c" />
@@ -26,7 +26,7 @@ DevJournal is a modern web application built for developers to organize their le
 
 ---
 
-# 📖 About DevJournal
+# About DevJournal
 
 Developers often use multiple applications to maintain notes, track learning goals, bookmark useful resources, save code snippets, and monitor their progress. Switching between different tools can interrupt workflow and make learning difficult.
 
@@ -36,9 +36,9 @@ The application enables users to maintain personal journals, create learning goa
 
 ---
 
-# ✨ Features
+# Features
 
-## 🔐 Authentication
+## Authentication
 
 - Secure user registration and login
 - JWT-based authentication
@@ -48,7 +48,7 @@ The application enables users to maintain personal journals, create learning goa
 
 ---
 
-## 📔 Journal Management
+## Journal Management
 
 - Create personal developer journals
 - Edit existing journal entries
@@ -58,7 +58,7 @@ The application enables users to maintain personal journals, create learning goa
 
 ---
 
-## 🎯 Goal Management
+## Goal Management
 
 - Create personal learning goals
 - Track progress
@@ -68,7 +68,7 @@ The application enables users to maintain personal journals, create learning goa
 
 ---
 
-## 🗺️ Learning Roadmaps
+## Learning Roadmaps
 
 - Create customized learning roadmaps
 - Organize milestones
@@ -77,7 +77,7 @@ The application enables users to maintain personal journals, create learning goa
 
 ---
 
-## 📚 Resource Library
+## Resource Library
 
 Store and organize:
 
@@ -90,7 +90,7 @@ Store and organize:
 
 ---
 
-## 💻 Code Snippet Manager
+## Code Snippet Manager
 
 - Save reusable code snippets
 - Organize snippets by language
@@ -99,7 +99,7 @@ Store and organize:
 
 ---
 
-## 📊 Analytics Dashboard
+## Analytics Dashboard
 
 Visualize your productivity through:
 
@@ -111,7 +111,7 @@ Visualize your productivity through:
 
 ---
 
-## 📱 Responsive Design
+## Responsive Design
 
 - Mobile-friendly interface
 - Responsive layouts
@@ -120,7 +120,7 @@ Visualize your productivity through:
 
 ---
 
-# 🛠 Tech Stack
+# Tech Stack
 
 ## Frontend
 
@@ -158,7 +158,7 @@ Visualize your productivity through:
 
 ---
 
-# 📂 Project Structure
+# Project Structure
 
 ```text
 DEVJOURNAL
@@ -188,7 +188,7 @@ DEVJOURNAL
 
 ---
 
-# 🚀 Getting Started
+# Getting Started
 
 ## Clone Repository
 
@@ -276,7 +276,7 @@ npm start
 
 ---
 
-# 🔒 Security
+# Security
 
 - JWT Authentication
 - Password Hashing using bcrypt
@@ -287,28 +287,28 @@ npm start
 
 ---
 
-# 🌐 Live Application
+# Live Application
 
 **Application:** https://devjournal-hq11.onrender.com
 
 ---
 
-# 📈 Future Enhancements
+# Future Enhancements
 
-- 🌙 Dark / Light Theme
-- 📅 Calendar Integration
-- 🔔 Notifications & Reminders
-- 📝 Rich Markdown Editor
-- 📌 Tags & Categories
-- 📥 Import & Export Journals
-- 🔍 Advanced Search & Filtering
-- 🏆 Daily Learning Streaks
-- 📈 Advanced Productivity Insights
-- 🔗 GitHub Activity Integration
+- Dark / Light Theme
+- Calendar Integration
+- Notifications & Reminders
+- Rich Markdown Editor
+- Tags & Categories
+- Import & Export Journals
+- Advanced Search & Filtering
+- Daily Learning Streaks
+-  Advanced Productivity Insights
+- GitHub Activity Integration
 
 ---
 
-# 🚀 Deployment
+# Deployment
 
 The application is deployed on Render.
 
@@ -318,7 +318,7 @@ https://devjournal-hq11.onrender.com
 
 ---
 
-# 🤝 Contributing
+# Contributing
 
 Contributions are welcome.
 
@@ -345,7 +345,7 @@ git push origin feature-name
 
 ---
 
-# 👨‍💻 Author
+# Author
 
 **Priyanshu Mudgal**
 
@@ -359,7 +359,7 @@ GitHub: **https://github.com/Priyan5huMudgal**
 
 <div align="center">
 
-### ⭐ If you found this project useful, consider giving it a star!
+### If you found this project useful, consider giving it a star!
 
 Made with ❤️ by **Priyanshu Mudgal**
 
