@@ -19,6 +19,8 @@ DevJournal is a modern web application built for developers to organize their le
 ### 🌐 Live Demo
 
 **https://devjournal-hq11.onrender.com**
+<img width="1873" height="971" alt="image" src="https://github.com/user-attachments/assets/7baf8eea-7ceb-4a05-ac94-6356f1ccee0c" />
+
 
 </div>
 
