@@ -11,7 +11,7 @@ DevJournal is a modern web application built for developers to organize their le
   <img src="https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=node.js&logoColor=white"/>
   <img src="https://img.shields.io/badge/Express.js-4-black?style=for-the-badge&logo=express"/>
   <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white"/>
-  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
+  <img src="https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
   <img src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white"/>
   <img src="https://img.shields.io/badge/TailwindCSS-4-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
 </p>
@@ -125,7 +125,7 @@ Visualize your productivity through:
 ## Frontend
 
 - React 19
-- TypeScript
+- JavaScript and JSX
 - Vite
 - React Router
 - Tailwind CSS
@@ -145,7 +145,6 @@ Visualize your productivity through:
 - bcrypt
 - Helmet
 - CORS
-- Express Rate Limiting
 
 ---
 
@@ -168,7 +167,7 @@ DEVJOURNAL
 │   ├── middleware/
 │   ├── models/
 │   ├── routes/
-│   ├── db.ts
+│   ├── db.js
 │   └── utils/
 │
 ├── src/
@@ -180,9 +179,8 @@ DEVJOURNAL
 │   └── utils/
 │
 ├── public/
-├── server.ts
+├── server.js
 ├── package.json
-├── tsconfig.json
 └── README.md
 ```
 
@@ -213,7 +211,7 @@ npm install
 Create a **.env** file in the project root.
 
 ```env
-MONGODB_URI=your_mongodb_connection_string
+MONGO_URI=your_mongodb_connection_string
 
 JWT_SECRET=your_jwt_secret
 
@@ -222,12 +220,12 @@ JWT_REFRESH_SECRET=your_refresh_secret
 NODE_ENV=development
 ```
 
-| Variable | Description |
-|----------|-------------|
-| `MONGODB_URI` | MongoDB connection string |
-| `JWT_SECRET` | Secret key used to generate access tokens |
-| `JWT_REFRESH_SECRET` | Secret key used to generate refresh tokens |
-| `NODE_ENV` | Application environment (`development` or `production`) |
+| Variable             | Description                                             |
+| -------------------- | ------------------------------------------------------- |
+| `MONGO_URI`          | MongoDB connection string                               |
+| `JWT_SECRET`         | Secret key used to generate access tokens               |
+| `JWT_REFRESH_SECRET` | Secret key used to generate refresh tokens              |
+| `NODE_ENV`           | Application environment (`development` or `production`) |
 
 ---
 
@@ -259,20 +257,50 @@ npm run build
 npm start
 ```
 
+## Deploy on Render
+
+Create a Render **Web Service** connected to this repository with:
+
+| Setting | Value |
+| ------- | ----- |
+| Environment | Node |
+| Build Command | `npm install && npm run build` |
+| Start Command | `npm start` |
+| Health Check Path | `/api/health` |
+
+Add these environment variables in Render. Do not commit their values to GitHub:
+
+```env
+MONGO_URI=your_mongodb_atlas_connection_string
+JWT_SECRET=use_a_long_random_secret
+JWT_REFRESH_SECRET=use_a_different_long_random_secret
+NODE_ENV=production
+```
+
+The application serves both the REST API and the compiled React frontend from the same Render service. MongoDB Atlas must allow connections from Render, either through an appropriate IP access rule or the Atlas deployment's network configuration.
+
+After deployment, verify:
+
+```text
+https://your-render-domain.onrender.com/api/health
+```
+
+The endpoint should return `success: true` and `status: "healthy"`.
+
 ---
 
 # 📡 API Endpoints
 
-| Endpoint | Description |
-|-----------|-------------|
-| `/api/auth` | User Authentication |
-| `/api/journal` | Journal Management |
-| `/api/goals` | Goal Management |
-| `/api/roadmaps` | Roadmap Management |
-| `/api/resources` | Resource Management |
-| `/api/snippets` | Code Snippet Management |
-| `/api/analytics` | Analytics Dashboard |
-| `/api/health` | Server Health Check |
+| Endpoint         | Description             |
+| ---------------- | ----------------------- |
+| `/api/auth`      | User Authentication     |
+| `/api/journal`   | Journal Management      |
+| `/api/goals`     | Goal Management         |
+| `/api/roadmaps`  | Roadmap Management      |
+| `/api/resources` | Resource Management     |
+| `/api/snippets`  | Code Snippet Management |
+| `/api/analytics` | Analytics Dashboard     |
+| `/api/health`    | Server Health Check     |
 
 ---
 
