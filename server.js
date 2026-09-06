@@ -21,7 +21,7 @@ async function initializeApp() {
   if (initPromise) return initPromise;
   initPromise = (async () => {
     try {
-      const isProduction = false;
+      const isProduction = process.env.NODE_ENV === "production";
       await connectDB();
       app.use(
         helmet({
