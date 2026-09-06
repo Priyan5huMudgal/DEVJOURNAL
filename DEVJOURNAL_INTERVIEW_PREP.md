@@ -1,6 +1,45 @@
-# DevJournal Interview Preparation Guide
+# DevJournal Project Report and Interview Brief
 
-This document is a source of truth for explaining the DevJournal project in interviews. It is based on the current repository implementation and the project description in the resume.
+**Project:** DevJournal
+**Category:** Full-stack developer productivity and learning platform
+**Implementation status:** Functional JavaScript application with local and Render deployment support
+**Repository:** `Priyan5huMudgal/DEVJOURNAL`
+**Last updated:** September 2026
+
+This report is the source of truth for understanding, presenting, and discussing DevJournal in technical interviews. It is based on the current repository implementation and distinguishes implemented behavior from proposed improvements.
+
+## Executive Summary
+
+DevJournal is a multi-user workspace that consolidates developer journals, learning goals, roadmaps, resources, reusable snippets, calendar activity, and productivity analytics. The application uses a React and JavaScript frontend, an Express and Node.js backend, MongoDB with Mongoose, and JWT-based authentication.
+
+The system is hosted as a single Express application. In development, Express mounts Vite middleware; in production, it serves the compiled React application from `dist` while exposing REST endpoints under `/api`. User-owned records are protected by JWT middleware and database queries scoped by `userId`.
+
+The current implementation is suitable for a personal productivity product and interview demonstration. The main engineering limitations are the absence of automated tests, in-memory analytics over complete user datasets, regex-based search, localStorage access-token storage, and a refresh-token flow that does not yet implement rotation.
+
+## Current Project Status
+
+| Area                 | Current status                                                     |
+| -------------------- | ------------------------------------------------------------------ |
+| Frontend             | React 19, JavaScript/JSX, Vite, Tailwind CSS, DaisyUI              |
+| Backend              | Express REST API running from `server.js`                          |
+| Persistence          | MongoDB Atlas through Mongoose                                     |
+| Authentication       | JWT access token, HTTP-only refresh-token cookie, bcryptjs hashing |
+| Deployment           | GitHub-connected Render Web Service                                |
+| Local development    | `npm run dev` with Express and Vite middleware                     |
+| Production execution | `npm run build` followed by `npm start`                            |
+| Health verification  | `/api/health` returns database connectivity status                 |
+
+## Recent Engineering Updates
+
+- Migrated the application from TypeScript to JavaScript and JSX.
+- Updated server-side imports for Node.js ESM compatibility.
+- Added production-mode detection through `NODE_ENV` so the server serves `dist` in production and Vite middleware in development.
+- Added Render hostname support and production deployment documentation.
+- Corrected the DaisyUI stylesheet import order so Vite/PostCSS can process the CSS consistently.
+- Disabled the optional Vite HMR websocket in middleware mode to avoid recurring local port conflicts when duplicate terminal sessions are opened.
+- Verified local MongoDB connectivity, the production build, the development server, and the `/api/health` endpoint.
+
+The HMR change affects the development experience only: browser refresh is used instead of Vite hot module replacement. It does not change the production bundle or API behavior.
 
 ## 1. Project Summary
 
@@ -262,7 +301,7 @@ Snippet
 - _id: ObjectId
 - userId: ObjectId -> User
 - title: required string
-- language: required string, default typescript
+- language: required string, default "typescript"
 - description: string
 - code: required string
 - tags: string[]
@@ -485,7 +524,7 @@ The access token is used frequently for API authorization and expires sooner. Th
 
 **What happens if the database is down?**
 
-Connection state is tracked in `server/db.ts`. The `/api` middleware allows health checks through but returns HTTP 503 for other API requests when there is no database connection. The frontend checks health at startup and shows a retryable error screen.
+Connection state is tracked in `server/db.js`. The `/api` middleware allows health checks through but returns HTTP 503 for other API requests when there is no database connection. The frontend checks health at startup and shows a retryable error screen.
 
 ### MongoDB and data modeling
 
