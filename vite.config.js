@@ -21,10 +21,10 @@ export default defineConfig(() => {
     server: {
       host: "0.0.0.0",
       port: 3000,
+      strictPort: false,
       allowedHosts: ["localhost", "127.0.0.1", "devjournal-hq11.onrender.com"],
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
-      hmr: process.env.DISABLE_HMR !== "true",
+      // Express middleware mode does not need a Vite websocket for local use.
+      hmr: false,
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === "true" ? null : {},
     },
