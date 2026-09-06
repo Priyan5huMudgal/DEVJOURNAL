@@ -261,12 +261,12 @@ npm start
 
 Create a Render **Web Service** connected to this repository with:
 
-| Setting | Value |
-| ------- | ----- |
-| Environment | Node |
-| Build Command | `npm install && npm run build` |
-| Start Command | `npm start` |
-| Health Check Path | `/api/health` |
+| Setting           | Value                          |
+| ----------------- | ------------------------------ |
+| Environment       | Node                           |
+| Build Command     | `npm install && npm run build` |
+| Start Command     | `npm start`                    |
+| Health Check Path | `/api/health`                  |
 
 Add these environment variables in Render. Do not commit their values to GitHub:
 
